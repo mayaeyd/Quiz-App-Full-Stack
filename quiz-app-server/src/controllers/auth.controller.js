@@ -1,6 +1,6 @@
 import User from "../models/users.model";
 import bcrypt from "bcrypt";
-import jwt from 'jsonwebtoken';
+import jwt from "jsonwebtoken";
 
 export const login = async (req, res) => {
   try {
@@ -22,10 +22,9 @@ export const login = async (req, res) => {
       });
     }
 
-    const token = await jwt.sign({userId: user.id}, process.env.SECRET_KEY);
+    const token = await jwt.sign({ userId: user.id }, process.env.SECRET_KEY);
 
     return res.status(200).send(user, token);
-    
   } catch (error) {
     console.log(error);
     return res.status(500).send({
@@ -66,14 +65,42 @@ export const register = async (req, res) => {
     });
 
     return res.status(201).send({
-        message:"User created successfully",
-        user,
+      message: "User created successfully",
+      user,
     });
   } catch (error) {
     console.log(error.message);
 
     return res.status(500).send({
-        message:"Server error"
+      message: "Server error",
     });
+  }
+};
+
+export const updateProfile = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { username, email, password } = req.body;
+
+    const updatedUser = await User.findByIdAndUpdate(
+      id,
+      {
+        username,
+        email,
+        password,
+      },
+      { new: true }
+    );
+
+    if (!updateUser) {
+      return res.status(404).send({ message: "User not found" });
+    }
+
+    return res
+      .status(200)
+      .send({ message: "User updated successfully", user: updatedUser });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ message: "Server error" });
   }
 };
