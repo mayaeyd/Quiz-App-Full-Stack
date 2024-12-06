@@ -29,3 +29,47 @@ export const login = async (req, res) => {
     });
   }
 };
+
+export const register = async (req, res) => {
+  try {
+    const { username, email, password } = req.body;
+    if (!username && !email && !password) {
+      return res.status(400).send({
+        message: "Credentials are required",
+      });
+    }
+
+    const userEmail = await User.findOne({ username });
+    const userName = await User.findOne({ email });
+
+    if (userEmail) {
+      return res.status(400).send({
+        message: "Email already in use",
+      });
+    }
+    if (userName) {
+      return res.status(400).send({
+        message: "Username already taken",
+      });
+    }
+
+    const hashedPassword = await bcrypt(password, 10);
+
+    const user = await User.create({
+      username,
+      email,
+      hashedPassword,
+    });
+
+    return res.status(201).send({
+        message:"User created successfully",
+        user,
+    });
+  } catch (error) {
+    console.log(error.message);
+
+    return res.status(500).send({
+        message:"Server error"
+    });
+  }
+};
