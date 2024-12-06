@@ -51,7 +51,7 @@ export const createUser = async (req, res) => {
 export const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const { username, email, password } = req.params;
+    const { username, email, password } = req.body;
 
     const updatedUser = await User.findByIdAndUpdate(id, {
       username,
@@ -59,13 +59,32 @@ export const updateUser = async (req, res) => {
       password,
     });
 
-    if(!updateUser){
-        return res.status(404).send({message: 'User not found'});
+    if (!updateUser) {
+      return res.status(404).send({ message: "User not found" });
     }
 
     return res
       .status(200)
       .send({ message: "User updated successfully", user: updatedUser });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ message: "Server error" });
+  }
+};
+
+export const deleteUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const deletedUser = await User.findByIdAndDelete(id);
+
+    if (!deletedUser) {
+      return res.status(404).send({ message: "User not found" });
+    }
+
+    return res
+      .status(200)
+      .send({ message: "User deleted successfully", user: deleteUser });
   } catch (error) {
     console.log(error);
     return res.status(500).send({ message: "Server error" });
