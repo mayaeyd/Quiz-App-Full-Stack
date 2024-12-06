@@ -14,6 +14,37 @@ export const getUsers = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    return res.status(500).send({message: 'Server error'});
+    return res.status(500).send({ message: "Server error" });
+  }
+};
+
+export const createUser = async (req, res) => {
+  try {
+    const { username, email, password } = req.body;
+
+    const userEmail = await User.findOne({ email });
+    const userName = await User.findOne({ username });
+    if (userEmail) {
+      return res.status(400).send({ message: "Email already in use" });
+    }
+    if (userName) {
+      return res.status(400).send({ message: "Username already taken" });
+    }
+
+    const user = new User({
+      username,
+      email,
+      password,
+    });
+
+    await user.save();
+
+    return res
+      .status(201)
+      .send({ message: "User created successfully", User: user });
+      
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ message: "Server error" });
   }
 };
