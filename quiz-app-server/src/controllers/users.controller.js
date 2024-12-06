@@ -1,4 +1,4 @@
-import User from "../models/users.model";
+import User from "../models/users.model.js";
 
 export const getUsers = async (req, res) => {
   try {
@@ -22,6 +22,8 @@ export const createUser = async (req, res) => {
   try {
     const { username, email, password } = req.body;
 
+        console.log(username, email, password);
+        
     const userEmail = await User.findOne({ email });
     const userName = await User.findOne({ username });
     if (userEmail) {
