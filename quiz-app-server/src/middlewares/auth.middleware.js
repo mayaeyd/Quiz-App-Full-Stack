@@ -1,4 +1,6 @@
-export const authMiddleware = (req, res, next) => {
+import jwt from 'jsonwebtoken';
+
+export const authMiddleware = async (req, res, next) => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader) {
@@ -18,7 +20,7 @@ export const authMiddleware = (req, res, next) => {
   const token = splitted[1];
 
   try {
-    //verify jwt token
+    const payload = await jwt.verify(token , process.env.SECRET_KEY);
     console.log("Auth middleware passed ", token);
     next();
   } catch (error) {
