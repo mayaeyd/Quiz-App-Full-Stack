@@ -42,7 +42,30 @@ export const createUser = async (req, res) => {
     return res
       .status(201)
       .send({ message: "User created successfully", User: user });
-      
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ message: "Server error" });
+  }
+};
+
+export const updateUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { username, email, password } = req.params;
+
+    const updatedUser = await User.findByIdAndUpdate(id, {
+      username,
+      email,
+      password,
+    });
+
+    if(!updateUser){
+        return res.status(404).send({message: 'User not found'});
+    }
+
+    return res
+      .status(200)
+      .send({ message: "User updated successfully", user: updatedUser });
   } catch (error) {
     console.log(error);
     return res.status(500).send({ message: "Server error" });
