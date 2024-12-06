@@ -1,0 +1,12 @@
+.quiz-container{
+    color: purple;
+    height: 50%;
+    width: 50%;
+    display: flex;
+    background-color: white;
+    padding: 20px;
+    border-radius: 20px;
+    justify-content: center;
+    align-items: center;
+    margin: 100px;
+}

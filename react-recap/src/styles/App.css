@@ -1,0 +1,17 @@
+/* App.css */
+body {
+    background-color: #0f0a19;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: #e0e0e0; 
+}
+
+div{
+    height: 100vh;
+    width: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e0e0e0;
+}
+  
