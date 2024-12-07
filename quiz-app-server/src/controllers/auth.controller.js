@@ -96,7 +96,7 @@ export const updateProfile = async (req, res) => {
       { new: true }
     );
 
-    if (!updateUser) {
+    if (!updatedUser) {
       return res.status(404).send({ message: "User not found" });
     }
 
