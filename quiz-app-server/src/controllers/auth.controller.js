@@ -6,6 +6,12 @@ export const login = async (req, res) => {
   try {
     const { username, password } = req.body;
 
+    if(!username || !password){
+      return res.status(400).send({
+        message: "All fields are required",
+      });
+    }
+
     const user = await User.findOne({ username }).select("+password");
 
     if (!user) {
@@ -38,7 +44,7 @@ export const login = async (req, res) => {
 export const register = async (req, res) => {
   try {
     const { username, email, password } = req.body;
-    if (!username && !email && !password) {
+    if (!username || !email || !password) {
       return res.status(400).send({
         message: "Credentials are required",
       });
@@ -108,3 +114,48 @@ export const updateProfile = async (req, res) => {
     return res.status(500).send({ message: "Server error" });
   }
 };
+
+export const adminLogin = async (req,res)=>{
+  try {
+    const { username, password } = req.body;
+
+    if(!username || !password){
+      return res.status(400).send({
+        message: "All fields are required",
+      });
+    }
+
+    const user = await User.findOne({ username }).select("+password");
+
+    if (!user) {
+      return res.status(404).send({
+        message: "Invalid credentials",
+      });
+    }
+
+    if(user.role !=='admin'){
+      return res.status(401).send({
+        message: "Unauthorized",
+      });
+    }
+
+    console.log(password , user.password);
+    
+    const check = await bcrypt.compare(password, user.password);
+
+    if (!check) {
+      return res.status(400).send({
+        message: "Invalid credentials",
+      });
+    }
+
+    const token = await jwt.sign({ userId: user.id }, process.env.SECRET_KEY);
+
+    return res.status(200).send({user, token});
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).send({
+      message: "Something went wrong",
+    });
+  }
+}

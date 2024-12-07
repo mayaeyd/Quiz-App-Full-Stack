@@ -26,6 +26,24 @@ export const LoginUser = createAsyncThunk(
   }
 );
 
+export const registerUser = createAsyncThunk(
+  "register/RegisterUser",
+  async (credentials) => {
+    try{
+        const {username , email, password} = credentials;
+        const response = await axios.post("http://127.0.0.1:8800/auth/register",{
+            username,
+            email,
+            password
+        });
+        console.log(response.data);
+        return response.data;
+    }catch(error){
+        console.log(error.message);
+    }
+  }
+);
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -53,8 +71,9 @@ const authSlice = createSlice({
       .addCase(LoginUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-      })
-}});
+      });
+  },
+});
 
-export const {logout} = authSlice.actions;
+export const { logout } = authSlice.actions;
 export default authSlice.reducer;
