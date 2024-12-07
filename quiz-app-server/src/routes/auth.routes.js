@@ -7,5 +7,6 @@ const router = Router();
 router.post("/login", login);
 router.post("/register", register);
 router.put("/", authMiddleware, updateProfile);
+router.post("/adminLogin");
 
 export default router;

@@ -6,6 +6,7 @@ import FilterQuiz from "./pages/FilterQuiz";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Admin from "./pages/Admin";
+import AdminsRoute from "./components/routes/AdminsRoute";
 
 function App() {
   return(
@@ -16,7 +17,7 @@ function App() {
         <Route path="/quiz" element= {<Quiz />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/admin" element={<AdminRoute />}>
+        <Route path="/admin" element={<AdminsRoute />}>
           <Route path="/admin/dashboard" element={<Admin />}/>
         </Route>
       </Routes>
