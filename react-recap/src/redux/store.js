@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
-import quizzesReducer from "./slices/quizSlices"
+import quizzesReducer from "./slices/quizSlices";
+import authReducer from "./slices/authSlice";
 
 const store = configureStore({
     reducer:{
-        quizzes: quizzesReducer
+        quizzes: quizzesReducer,
+        auth: authReducer,
     }
 });
 
