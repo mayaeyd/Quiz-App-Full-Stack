@@ -2,6 +2,7 @@ import { Button, Input } from "@mui/material";
 import React, { useState } from "react";
 import { registerUser } from "../../redux/slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const dispatch = useDispatch();
@@ -9,12 +10,15 @@ const Register = () => {
     (state) => state.auth
   );
 
+  const navigate = useNavigate();
+
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleRegister = () => {
     dispatch(registerUser({ username, email, password }));
+    navigate("/adminPage");
   };
 
   return (

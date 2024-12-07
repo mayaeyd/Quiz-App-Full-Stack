@@ -2,6 +2,7 @@ import { Button, Input } from "@mui/material";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { LoginUser } from "../../redux/slices/authSlice";
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -9,11 +10,14 @@ const Login = () => {
     (state) => state.auth
   );
 
+  const navigate = useNavigate();
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = () => {
     dispatch(LoginUser({username, password}));
+    navigate("/");
   };
 
   return (

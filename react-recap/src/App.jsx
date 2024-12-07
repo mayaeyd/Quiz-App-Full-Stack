@@ -5,6 +5,7 @@ import Quiz from "./pages/Quiz";
 import FilterQuiz from "./pages/FilterQuiz";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Admin from "./pages/Admin";
 
 function App() {
   return(
@@ -15,6 +16,9 @@ function App() {
         <Route path="/quiz" element= {<Quiz />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/admin" element={<AdminRoute />}>
+          <Route path="/admin/dashboard" element={<Admin />}/>
+        </Route>
       </Routes>
     </BrowserRouter>
   );
