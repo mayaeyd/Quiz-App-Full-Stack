@@ -83,7 +83,7 @@ export const register = async (req, res) => {
 
 export const updateProfile = async (req, res) => {
   try {
-    const { id } = req.params;
+    const id = req.user.id;
     const { username, email, password } = req.body;
 
     const updatedUser = await User.findByIdAndUpdate(

@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import User from '../models/users.model';
 
 export const authMiddleware = async (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -21,6 +22,12 @@ export const authMiddleware = async (req, res, next) => {
 
   try {
     const payload = await jwt.verify(token , process.env.SECRET_KEY);
+
+    const id = payload.userId;
+    const user = await User.findById(id);
+
+    req.user = user;
+
     console.log("Auth middleware passed ", token);
     next();
   } catch (error) {
