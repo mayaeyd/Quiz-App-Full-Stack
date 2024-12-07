@@ -21,3 +21,46 @@ export const getQuizzes = async (req, res) => {
     });
   }
 };
+
+export const createQuiz = async (req, res) => {
+  try {
+    const { category, correctAnswer, incorrectAnswers, question, difficulty } =
+      req.body;
+
+    console.log(
+      category,
+      correctAnswer,
+      incorrectAnswers,
+      question,
+      difficulty
+    );
+
+    const quizQuestion = await Quiz.findOne({ question });
+    if (quizQuestion) {
+      return res.status(400).send({ message: "Question already added" });
+    }
+
+    if (incorrectAnswers.length !== 3) {
+      return res
+        .status(400)
+        .send({ message: "Incorrect answers must contain exactly 3 items." });
+    }
+
+    const quiz = new Quiz({
+      category,
+      correctAnswer,
+      incorrectAnswers,
+      question,
+      difficulty,
+    });
+
+    await quiz.save();
+
+    return res
+      .status(201)
+      .send({ message: "Quiz created successfully", Quiz: quiz });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ message: "Server error" });
+  }
+};
