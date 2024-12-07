@@ -6,12 +6,13 @@ import {
   updateUser,
 } from "../controllers/users.controller.js";
 import { authMiddleware } from "../middlewares/auth.middleware.js";
+import { adminMiddleware } from "../middlewares/admin.middleware.js";
 
 const router = new Router();
 
-router.get("/:id?",authMiddleware, getUsers);
-router.post("/", authMiddleware, createUser);
-router.put("/:id", authMiddleware, updateUser);
-router.delete("/:id", authMiddleware, deleteUser);
+router.get("/:id?", authMiddleware, adminMiddleware, getUsers);
+router.post("/", authMiddleware, adminMiddleware, createUser);
+router.put("/:id", authMiddleware, adminMiddleware, updateUser);
+router.delete("/:id", authMiddleware, adminMiddleware, deleteUser);
 
 export default router;
