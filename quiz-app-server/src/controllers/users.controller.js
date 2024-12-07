@@ -61,7 +61,7 @@ export const updateUser = async (req, res) => {
       password,
     }, { new: true });
 
-    if (!updateUser) {
+    if (!updatedUser) {
       return res.status(404).send({ message: "User not found" });
     }
 

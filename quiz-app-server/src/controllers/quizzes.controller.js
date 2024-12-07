@@ -64,3 +64,53 @@ export const createQuiz = async (req, res) => {
     return res.status(500).send({ message: "Server error" });
   }
 };
+
+export const updateQuiz = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { category, correctAnswer, incorrectAnswers, question, difficulty } =
+      req.body;
+
+    const updatedQuiz = await Quiz.findByIdAndUpdate(
+      id,
+      {
+        category,
+        correctAnswer,
+        incorrectAnswers,
+        question,
+        difficulty,
+      },
+      { new: true }
+    );
+
+    if (!updatedQuiz) {
+      return res.status(404).send({ message: "Quiz not found" });
+    }
+
+    return res
+      .status(200)
+      .send({ message: "Quiz updated successfully", quiz: updateQuiz });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ message: "Server error" });
+  }
+};
+
+export const deleteQuiz = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const deletedQuiz = await Quiz.findByIdAndDelete(id);
+
+    if (!deletedQuiz) {
+      return res.status(404).send({ message: "Quiz not found" });
+    }
+
+    return res
+      .status(200)
+      .send({ message: "Quiz deleted successfully", quiz: deletedQuiz });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ message: "Server error" });
+  }
+};
