@@ -4,9 +4,9 @@ import {
   deleteQuiz,
   getQuizzes,
   updateQuiz,
-} from "../controllers/quizzes.controller";
-import { authMiddleware } from "../middlewares/auth.middleware";
-import { adminMiddleware } from "../middlewares/admin.middleware";
+} from "../controllers/quizzes.controller.js";
+import { authMiddleware } from "../middlewares/auth.middleware.js";
+import { adminMiddleware } from "../middlewares/admin.middleware.js";
 
 const router = Router();
 

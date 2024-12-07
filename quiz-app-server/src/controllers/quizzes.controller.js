@@ -89,7 +89,7 @@ export const updateQuiz = async (req, res) => {
 
     return res
       .status(200)
-      .send({ message: "Quiz updated successfully", quiz: updateQuiz });
+      .send({ message: "Quiz updated successfully", quiz: updatedQuiz });
   } catch (error) {
     console.log(error);
     return res.status(500).send({ message: "Server error" });
