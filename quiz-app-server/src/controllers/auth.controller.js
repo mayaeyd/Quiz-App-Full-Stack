@@ -1,4 +1,4 @@
-import User from "../models/users.model";
+import User from "../models/users.model.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
@@ -6,7 +6,7 @@ export const login = async (req, res) => {
   try {
     const { username, password } = req.body;
 
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ username }).select("+password");
 
     if (!user) {
       return res.status(404).send({
@@ -14,6 +14,8 @@ export const login = async (req, res) => {
       });
     }
 
+    console.log(password , user.password);
+    
     const check = await bcrypt.compare(password, user.password);
 
     if (!check) {
@@ -24,9 +26,9 @@ export const login = async (req, res) => {
 
     const token = await jwt.sign({ userId: user.id }, process.env.SECRET_KEY);
 
-    return res.status(200).send(user, token);
+    return res.status(200).send({user, token});
   } catch (error) {
-    console.log(error);
+    console.log(error.message);
     return res.status(500).send({
       message: "Something went wrong",
     });
@@ -42,9 +44,9 @@ export const register = async (req, res) => {
       });
     }
 
-    const userEmail = await User.findOne({ username });
-    const userName = await User.findOne({ email });
-
+    const userEmail = await User.findOne({ email });
+    const userName = await User.findOne({ username });
+    
     if (userEmail) {
       return res.status(400).send({
         message: "Email already in use",
@@ -56,12 +58,14 @@ export const register = async (req, res) => {
       });
     }
 
-    const hashedPassword = await bcrypt(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 10);
+    console.log(hashedPassword, password);
+    
 
     const user = await User.create({
       username,
       email,
-      hashedPassword,
+      password:hashedPassword,
     });
 
     return res.status(201).send({
